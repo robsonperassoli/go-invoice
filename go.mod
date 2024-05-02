@@ -1,4 +1,4 @@
-module robson.perassoli.me/goinvoice
+module goinvoice
 
 go 1.22.2
 
