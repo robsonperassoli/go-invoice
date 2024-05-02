@@ -84,19 +84,7 @@ func parseInput() Invoice {
 	}
 }
 
-func main() {
-	var invoice Invoice = parseInput()
-
-	date := time.Now().Format("Mon, Jan _2, 2006")
-
-	// parsedTime, err := time.Parse(time.DateOnly, "2024-04-10")
-	// if err != nil {
-	// 	fmt.Errorf("Error parsing time", err)
-	// }
-
-	// //fmt.Println(parsedTime)
-	// fmt.Println(parsedTime.Format("Mon, Jan _2, 2006"))
-
+func renderPdf(invoice Invoice, date string, filePath string) error {
 	pdf := gofpdf.New("P", "mm", "A4", "")
 	pdf.SetMargins(20, 30, 20)
 	pdf.AddPage()
@@ -190,7 +178,14 @@ func main() {
 	pdf.SetFontSize(10)
 	pdf.Cell(0, 10, fmt.Sprintf("DATE: %s", date))
 
-	err := pdf.OutputFileAndClose("invoice.pdf")
+	return pdf.OutputFileAndClose(filePath)
+}
+
+func main() {
+	var invoice Invoice = parseInput()
+	date := time.Now().Format("Mon, Jan _2, 2006")
+
+	err := renderPdf(invoice, date, "invoice.pdf")
 	if err != nil {
 		fmt.Errorf("error generating pdf", err)
 	}
